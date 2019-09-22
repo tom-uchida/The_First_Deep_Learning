@@ -44,8 +44,7 @@ class MiddleLayer:
         self.w -= eta * self.grad_w
         self.b -= eta * self.grad_b
 
-
-
+# 出力層
 class OutputLayer:
     # 初期設定
     def __init__(self, n_upper, n):

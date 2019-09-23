@@ -8,14 +8,14 @@ input_data      = (input_data-np.pi) / np.pi # 入力を-1.0~1.0の範囲に
 n_data = len(correct_data) # データ数
 
 # 各設定値
-n_in = 1    # 入力層のニューロン数
-n_mid = 3   # 中間層のニューロン数
-n_out = 1   # 出力層のニューロン数
+n_in    = 1 # 入力層のニューロン数
+n_mid   = 3 # 中間層のニューロン数
+n_out   = 1 # 出力層のニューロン数
 
-wb_width = 0.01 # 重みとバイアスの広がり具合
-eta = 0.1       # 学習係数
-epoch = 2001
-interval = 200  # 経過の表示間隔
+wb_width    = 0.01 # 重みとバイアスの広がり具合
+eta         = 0.1  # 学習係数
+epoch       = 2001
+interval    = 200  # 経過の表示間隔
 
 # 中間層
 class MiddleLayer:
@@ -53,9 +53,9 @@ class OutputLayer:
         self.b = wb_width * np.random.randn(n)
 
     # 順伝播
-    def forward(self, w):
+    def forward(self, x):
         self.x = x
-        u = np.dot(x, self.x) + self.b
+        u = np.dot(x, self.w) + self.b
         self.y = u # 恒等関数
 
     # 逆伝播
@@ -97,8 +97,8 @@ if __name__ == "__main__":
             output_layer.forward(middle_layer.y)
 
             # 逆伝播
-            middle_layer.backward(t.reshape(1, 1)) # 正解を行列に変換
-            output_layer.backward(middle_layer.grad_x)
+            output_layer.backward(t.reshape(1, 1)) # 正解を行列に変換
+            middle_layer.backward(output_layer.grad_x)
 
             # 重みとバイアスの更新
             middle_layer.update(eta)
@@ -118,6 +118,7 @@ if __name__ == "__main__":
 
         if i%interval == 0:
             # 出力のグラフ表示
+            plt.title("Epoch : " + str(i) + "/" + str(epoch))
             plt.plot(input_data, correct_data, linestyle="dashed")
             plt.scatter(plot_x, plot_y, marker="+")
             plt.show()
